@@ -1,0 +1,19 @@
+COLORS{
+    Yellow : #FEE70E
+    Black : #000000
+}
+
+FRONT-END TO DO{
+    Add Nav link Size;
+    Change Search button color;
+}
+
+BACK-END TODO{
+    Generate Produit [name price quantity stock]
+    Generate Category [ name ]
+    Add_Ref Category to Produit
+    Generate Card [ User:references  ]
+    Generate LineItem [Card:references Has many Produit]
+    Add To Card Button using Session
+     
+}
