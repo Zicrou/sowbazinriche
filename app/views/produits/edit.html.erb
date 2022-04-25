@@ -1,10 +1,11 @@
-<h1>Editing produit</h1>
-
-<%= render "form", produit: @produit %>
+<h1 class="m-2">Editing produit</h1>
+  <div class="d-flex justify-content-center">
+    <%= render "form", produit: @produit %>
+  </div>
 
 <br>
 
 <div>
-  <%= link_to "Show this produit", @produit %> |
-  <%= link_to "Back to produits", produits_path %>
+  <%= link_to "Show this produit", @produit, class:"btn btn-warning" %> |
+  <%= link_to "Back to produits", produits_path, class:"btn btn-primary" %>
 </div>
