@@ -1,9 +1,9 @@
-<h1>New produit</h1>
-
-<%= render "form", produit: @produit %>
-
+<h1 class="m-2">Nouveau Produit</h1>
+  <div class="d-flex justify-content-center">
+    <%= render "form", produit: @produit %>
+  </div>
 <br>
 
-<div>
+<div class="m-1">
   <%= link_to "Back to produits", produits_path %>
 </div>
