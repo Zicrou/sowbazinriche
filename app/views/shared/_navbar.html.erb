@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark  " style="background-color:#000000;">
   <div class="container-fluid">
-  <%= image_tag ("logo.jpg"), class:"navbar-brand image-brand"%>
+    <%= image_tag ("logo.jpg"), class:"navbar-brand image-brand"%>
     <!--a class="navbar-brand" href="#">Navbar</a-->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
@@ -8,11 +8,13 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <%= link_to "Home", root_path, class:"nav-link active" %>
+          <!--a class="nav-link active" aria-current="page" href="#">Home</a-->
           <!--a class="nav-link active" style="color:#FEE70E; border-bottom:1px solid #FEE70E; font-size:1.35rem;margin-right:14%;" aria-current="page" href="#">Home</a-->
         </li>
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="#">Link</a>
+        <%= link_to "Categories", categories_path, class:"nav-link" %>
+          <!--a class="nav-link" aria-current="page" href="#">Link</a-->
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
