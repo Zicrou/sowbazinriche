@@ -21,7 +21,7 @@
             @forelse ($produits as $produit)
             
                 <div class="col-3 mb-4">
-                    @include('boutiques.produits.card')
+                    @include('produits.card')
                 </div>
             @empty
                 <div class="col">

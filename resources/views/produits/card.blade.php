@@ -2,7 +2,7 @@
     <div class="card-body">
         <h5 class="card-title">
             <a
-                href="">{{ Str::limit($produit->titre, 40) }}</a>
+                href="{{ route('produit.show', ['slug' => $produit->getSlug(), 'produit' => $produit]) }}">{{ Str::limit($produit->titre, 40) }}</a>
         </h5>
         <hr>
         <p class="card-text">{{ $produit->taille }} yard</p>

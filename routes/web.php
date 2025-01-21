@@ -1,15 +1,15 @@
 <?php
 
 use App\Http\Controllers\Admin\ProduitController;
-use App\Http\Controllers\Boutique\BoutiqueController;
 use Illuminate\Support\Facades\Route;
 
 $idRegex   = '[0-9]+';
 $slugRegex = '[0-9a-z\-]+';
 
+// Refactor Boutique to use ProduitController instead of BoutiqueController, and remove the BoutiqueController
 // Route::prefix('boutique')->name('boutique.')->group(function (){
-    Route::get('/boutique', [BoutiqueController::class, 'index'])->name('boutique.index');
-    Route::get('/boutique/{slug}-{produit}', [BoutiqueController::class, 'show'])->name('boutique.show')->where([
+    Route::get('/produit', [App\Http\Controllers\ProduitController::class, 'index'])->name('produit.index');
+    Route::get('/produit/{slug}-{produit}', [App\Http\Controllers\ProduitController::class, 'show'])->name('produit.show')->where([
         'produit' => $idRegex,
         'slug'     => $slugRegex,
     ]);

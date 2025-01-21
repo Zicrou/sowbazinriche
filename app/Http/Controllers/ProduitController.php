@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Boutique;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Produit;
 use Illuminate\Http\Request;
 
-class BoutiqueController extends Controller
+class ProduitController extends Controller
 {
     public function index()
     {
@@ -23,7 +22,7 @@ class BoutiqueController extends Controller
 		// if ($title = $request->validated('title')) {
 		// 	$query->where('title', 'like', "%{$title}%");
 		// }
-        return view('boutiques.produits.index',[
+        return view('produits.index',[
 			'produits' => $query->paginate(3),
 			// 'input'      => $request->validated(),
 		]);
@@ -35,10 +34,10 @@ class BoutiqueController extends Controller
         // DemoJob::dispatch($property)->delay(now()->addSeconds(10));
         $expectedSlug = $produit->getSlug();
         if($slug !== $expectedSlug){
-            return to_route('boutique.show', ['slug' => $expectedSlug, 'produit' => $produit]);
+            return to_route('produit.show', ['slug' => $expectedSlug, 'produit' => $produit]);
         }
         // $images = Picture::where('produit_id', $produit->id)->get();
-        return view('boutiques.produits.show', [
+        return view('produits.show', [
             'produit' => $produit,
             // 'images' => $images
         ]);

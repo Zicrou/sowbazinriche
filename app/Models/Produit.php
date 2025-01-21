@@ -21,7 +21,7 @@ class Produit extends Model
 
     public function getslug(): string
     {
-        return Str::slug($this->title);
+        return Str::slug($this->titre);
     }
 
     public function getFormatedPrice()
