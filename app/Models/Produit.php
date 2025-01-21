@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
+
 
 class Produit extends Model
 {
@@ -16,4 +18,17 @@ class Produit extends Model
         'image',
         'taille',
     ];
+
+    public function getslug(): string
+    {
+        return Str::slug($this->title);
+    }
+
+    public function getFormatedPrice()
+	{
+		$formatedPrice = number_format($this->prix, 0, ',', ' ');
+		$formatedPrice = str_replace(' ', '&nbsp;', $formatedPrice);
+
+		return $formatedPrice . '&nbsp;CFA';
+	}
 }
