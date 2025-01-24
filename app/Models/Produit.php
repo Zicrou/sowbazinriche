@@ -29,6 +29,6 @@ class Produit extends Model
 		$formatedPrice = number_format($this->prix, 0, ',', ' ');
 		$formatedPrice = str_replace(' ', '&nbsp;', $formatedPrice);
 
-		return $formatedPrice . '&nbsp;CFA';
+		return $formatedPrice . '&nbsp;FCFA';
 	}
 }
