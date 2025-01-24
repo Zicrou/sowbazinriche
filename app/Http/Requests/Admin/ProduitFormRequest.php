@@ -26,7 +26,7 @@ class ProduitFormRequest extends FormRequest
             'quantite' => ['required', 'integer'],
             'prix' => ['required', 'integer', 'min:3'],
             'image' => ['required', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
-            'taille'=> ['required', 'integer'],
+            'images.*' => ['mimes:jpg,jpeg,png,gif,webp', 'max:2000'],
         ];
     }
 }

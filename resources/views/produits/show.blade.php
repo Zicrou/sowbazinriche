@@ -57,8 +57,6 @@
                 </div>
                 <div class="col">
                     <h1><strong>{{ $produit->titre }}</strong></h1>
-                    <h2>{{ $produit->taille }} piéces - {{ $produit->prix }}m²</h2>
-
                     <div class="text-primary fw-bold" style="font-size: 4rem;">
                         {{ number_format($produit->prix, thousands_separator: ' ') }}£
                     </div>
@@ -117,7 +115,7 @@
         </div>
 
         <div class="mt-4">
-            <p>{!! nl2br($produit->taille) !!}</p>
+            <p>{!! nl2br($produit->prix) !!}</p>
         </div>
         <div class="row">
             <div class="col-8">
@@ -143,7 +141,7 @@
                         <td>Localisation</td>
                         <td>
                             {{ $produit->prix }}<br />
-                            {{ $produit->prix }} {{ $produit->taille }}
+                            {{ $produit->prix }} {{ $produit->prix }}
                         </td>
                     </tr>
                 </table>

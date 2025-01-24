@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('titre');
             $table->string('image');
             $table->integer('prix');
-            $table->integer('taille');
             $table->integer('quantite');
             $table->boolean('disponible')->default(true);
             $table->timestamps();

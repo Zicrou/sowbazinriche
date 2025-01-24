@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\ProduitFormRequest;
 use App\Http\Requests\Admin\UpdateProduitFormRequest;
 use App\Models\Produit;
+use App\Models\Picture;
 use Illuminate\Support\Facades\File;
 
 
@@ -38,7 +39,6 @@ class ProduitController extends Controller
     public function store(ProduitFormRequest $request)
     {
         $data = $request->validated();
-        //dd($data['image']);
         if (request()->hasFile('image')) {
             if($image = $request->file('image')){
                 $filename = $image->getClientOriginalName();
@@ -50,7 +50,27 @@ class ProduitController extends Controller
             }
         }
         $produit = Produit::create($data);
-        // dd($produit);
+        if (request()->hasFile('images')) {
+            if($images = $request->file('images')){
+                foreach ($images as $image) {
+                    $filename = $image->getClientOriginalName();
+                    $imageName = time().'-'.uniqid().'_'.$filename;
+                    $path = 'pictures/produit/'.$produit->id.'/';
+                    // $image->storeAs($path, $imageName, 's3'); 
+
+                    $image->move($path, $imageName);
+                    $picture = Picture::create([
+                        'images' => $path.$imageName,
+                        'produit_id' => $produit->id
+                    ]);
+                    // PropertyPicture::create([
+                    //     'picture_id' => $picture->id,
+                    //     'property_id' => $property->id
+                    // ]);
+                }
+            }
+        }
+
 
         // $produit->types()->sync($request->validated('types'));
         return to_route('admin.produit.index')->with('success', 'Le produit a été créé');
@@ -63,9 +83,11 @@ class ProduitController extends Controller
      */
     public function edit(Produit $produit)
     {
+        $pictures = Picture::where('produit_id', $produit->id)->get();
+        // dd($pictures);
         return view('admin.produits.form', [
             'produit' => $produit, 
-            // 'types' => Type::pluck('name', 'id'),
+            'pictures' => $pictures,
         ]);
     }
 
@@ -76,7 +98,6 @@ class ProduitController extends Controller
     {
         $data = $request->validated();
         
-        // if (request()->hasFile('image')) {
             if($image = $request->file('image')){
                 $filename = $image->getClientOriginalName();
                 $imageName = time().'-'.uniqid().'_'.$filename;
@@ -85,12 +106,38 @@ class ProduitController extends Controller
                 // $image->storeAs($path, $imageName, 'public'); 
                 $image->move($path, $imageName);
             }
-        // }elseif () {
-
-        // }else{
-        //     return redirect()->back()->with('status', 'Veuillez mettre une image');
-        // }
         $produit->update($data);
+            if (request()->hasFile('images')) {
+                if($images = $request->file('images')){
+                    foreach ($images as $image) {
+                        $filename = $image->getClientOriginalName();
+                        
+                        $path = 'pictures/produit/'.$produit->id.'/';
+                        // $image->storeAs($path, $imageName, 's3'); 
+                        $imageName = $path.$filename; 
+                        $picture_exist = Picture::where('images', $imageName)->where('produit_id', $produit->id)->first();
+                        // dd(!$picture_exist->exists());
+                        
+                        if(!$picture_exist->exists()){
+                            $image->move($path, $filename);
+                            $picture = Picture::create([
+                                'images' => $path.$filename,
+                                'produit_id' => $produit->id
+                            ]);
+                        }
+                        // if($picture_exist->exists()){
+                            // Si la picture existe supprimer l'ancienne and replace it Et update it again in the Database 
+                            // if (File::exists($picture_exist->image)) {
+                            //     File::delete($picture_exist->image);
+                            // }
+                            // $picture_exist->delete();
+                            // $image->move($path, $filename);
+                            // $picture_exist->update(['images' => $imageName]);
+                        // }
+                    }
+                }
+            }
+
         // $produit->types()->sync($request->validated('types'));
         return to_route('admin.produit.index')->with('success', 'Le produit a été modifié');
 
