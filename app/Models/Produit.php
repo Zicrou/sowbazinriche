@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 
 class Produit extends Model
@@ -31,4 +32,9 @@ class Produit extends Model
 
 		return $formatedPrice . '&nbsp;FCFA';
 	}
+
+    public function commandes(): HasMany
+    {
+        return $this->hasMany(Commande::class);
+    }
 }

@@ -58,56 +58,49 @@
                 <div class="col">
                     <h1><strong>{{ $produit->titre }}</strong></h1>
                     <div class="text-primary fw-bold" style="font-size: 4rem;">
-                        {{ number_format($produit->prix, thousands_separator: ' ') }}£
+                        {{ number_format($produit->prix, thousands_separator: ' ') }} FCFA   
                     </div>
 
                     <h4>{{ __('Interested in this property :title ?', ['title' => $produit->titre]) }}</h4>
                     @include('shared.flash')
 
-                    <form action="" method="post" class="vstack gap-3">
+                    <form action="{{ route('admin.commande.store') }}" method="post" class="vstack gap-3">
                         @csrf
                         <div class="row">
-                            @include('shared.input', [
-                                'class' => 'col',
-                                'name' => 'firstname',
-                                'label' => 'Prénom',
-                                'value' => 'John',
+                            <div class="col-12 d-flex justify-content-center">
+                                @include('shared.input', [
+                                'class' => 'col-5 visually-hidden',
+                                'name' => 'produit_id',
+                                'label' => 'Quantité par métre:',
+                                'type' => 'number',
+                                'value' => $produit->id,
                             ])
-                            @include('shared.input', [
-                                'class' => 'col',
-                                'name' => 'lastname',
-                                'label' => 'Nom',
-                                'value' => 'Doe',
-                            ])
-                        </div>
+                            </div>
+                            <div class="col-12 d-flex justify-content-center">
+                                @include('shared.input', [
+                                'class' => 'col-5 visually-hidden',
+                                'name' => 'user_id',
+                                'label' => 'Quantité par métre:',
+                                'type' => 'number',
+                                'value' => Auth::user()->id,
 
-                        <div class="row">
-                            @include('shared.input', [
-                                'class' => 'col',
-                                'name' => 'phone',
-                                'label' => 'Téléphone',
-                                'value' => '0000000000',
                             ])
-                            @include('shared.input', [
-                                'type' => 'email',
-                                'class' => 'col',
-                                'name' => 'email',
-                                'label' => 'Email',
-                                'value' => 'john@doe.fr',
+                            </div>
+                            <div class="col-12 d-flex justify-content-center">
+                                @include('shared.input', [
+                                'class' => 'col-5',
+                                'name' => 'quantite',
+                                'label' => 'Quantité par métre:',
+                                'type' => 'number',
+                                'value' => $input['quantite'] ?? '',
                             ])
-                        </div>
-
-                        @include('shared.input', [
-                            'type' => 'textarea',
-                            'class' => 'col',
-                            'name' => 'message',
-                            'label' => 'Votre message',
-                            'value' => 'Description',
-                        ])
+                            </div>
+                            <div class="col-12 d-flex justify-content-center mt-4">
+                                <button class="col-3 btn btn-primary d-flex justify-content-center">
+                                    Nous contacter
+                                </button>
+                            </div>
                         <div>
-                            <button class="btn btn-primary">
-                                Nous contacter
-                            </button>
                         </div>
                     </form>
                 </div>

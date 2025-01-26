@@ -25,8 +25,9 @@
                 {{-- @include('shared.input', ['class' => 'col', 'name' => 'images[]', 'multiple', 'label' => 'Ajouter des photos', 'type' => 'file', 'value' => $produit->images]) --}}
             </div>
             <div class="mb-3 col-sm-3">
-                @include('shared.input', ['class' => 'col', 'name' => 'images[]', 'multiple', 'label' => 'Ajouter des photos', 'type' => 'file', 'value' => $produit->images])
-                {{-- <input type="file" name="images[]" multiple class="col form-control " value="{{ $produit->images }}"> --}}
+                {{-- @include('shared.input', ['class' => 'col', 'name' => 'images[]', 'multiple', 'label' => 'Ajouter des photos', 'type' => 'file', 'value' => $produit->images, 'multiple' => true]) --}}
+                <label for="images">Ajouter des Photos</label>
+                <input type="file" name="images[]" multiple class="col form-control " value="{{ $produit->images }}">
             </div>
             @include('shared.checkbox', ['class' => 'col mx-4', 'name' => 'disponible', 'label' => 'Disponible', 'value' => $produit->disponible])
             
@@ -51,16 +52,20 @@
             </button>
         </div>
     </form>
+    @php
+    @endphp
     <div class="row">
         <h2>Images</h2>
-        @if ($pictures->count() !==0 ) 
-            @foreach ( $pictures as $picture )
-                <div class="d-flex col-sm-3 mt-4">
-                    <img class="" src="{{ asset($picture->images) }}" alt="image" style="width:200px;height:275px">
-                    <a class="px-2" href="{{ route('picture.delete', $picture->id) }}">Effacer</a>
+        @if ($pictures !== "" )
+            @if ($pictures->count() !==0 )
+                @foreach ( $pictures as $picture )
+                    <div class="d-flex col-sm-3 mt-4">
+                        <img class="" src="{{ asset($picture->images) }}" alt="image" style="width:200px;height:275px">
+                        <a class="px-2" href="{{ route('picture.delete', $picture->id) }}">Effacer</a>
 
-                </div>
-            @endforeach
+                    </div>
+                @endforeach
+            @endif
         @endif
     </div>
 @endsection

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\ProduitController;
+use App\Http\Controllers\Admin\CommandeController;
 use App\Http\Controllers\PictureController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,7 @@ Route::get('/', function () {
 
 Route::prefix('admin')->name('admin.')->group(function () {
     Route::resource('produit', ProduitController::class);
+    Route::resource('commande', CommandeController::class);
 });
 
 // Route::resource('picture', PictureController::class);

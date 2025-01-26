@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Commande;
 use App\Models\Produit;
 use Illuminate\Http\Request;
 
@@ -30,7 +31,6 @@ class ProduitController extends Controller
 
     public function show(string $slug, Produit $produit)
     {
-        
         // DemoJob::dispatch($property)->delay(now()->addSeconds(10));
         $expectedSlug = $produit->getSlug();
         if($slug !== $expectedSlug){

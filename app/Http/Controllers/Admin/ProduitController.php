@@ -26,11 +26,11 @@ class ProduitController extends Controller
      */
     public function create()
     {
-        
+        // $pictures = Picture::where('produit_id', $produit->id)->get();
         return view('admin.produits.form', [
-            'produit' => new Produit(),
-            // 'types' => Type::pluck('name', 'id'),
-        ]);
+                'produit' => new Produit(),
+                'pictures' => '',
+            ]);
     }
 
     /**
@@ -118,7 +118,7 @@ class ProduitController extends Controller
                         $picture_exist = Picture::where('images', $imageName)->where('produit_id', $produit->id)->first();
                         // dd(!$picture_exist->exists());
                         
-                        if(!$picture_exist->exists()){
+                        if(is_null($picture_exist)) {
                             $image->move($path, $filename);
                             $picture = Picture::create([
                                 'images' => $path.$filename,
