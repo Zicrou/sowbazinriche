@@ -27,7 +27,7 @@
                 <a href="{{ route("produit.index")}}" @class(["nav-link", "active" => str_contains($route, 'produit.')]) aria-current="page">Boutique</a>
               </li>
               <li class="nav-item">
-                {{-- <a href="{{ route("boutique.vente.index")}}" @class(["nav-link", "active" => str_contains($route, 'boutique.')]) aria-current="page">Boutique</a> --}}
+                <a href="" @class(["nav-link", "active" => str_contains($route, 'boutique.')]) aria-current="page">Panier</a>
               </li>
             </ul>
             <div class="ms-auto">
