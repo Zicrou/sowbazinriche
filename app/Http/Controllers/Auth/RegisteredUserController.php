@@ -29,19 +29,27 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        // dd($request->all());
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'phone' => ['required', 'string', 'lowercase', 'phone', 'unique:'.User::class],
+            'phone' => ['required', 'string', 'max:255', 'unique:users,phone'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-
+        // Add custom validation rule for phone number
+        // $request->validate([
+        //     'phone' => ['required', 'string', 'max:255', 'unique:users,phone'],
+        // ]);
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'phone'=> $request->phone,
             'password' => Hash::make($request->password),
         ]);
+        if (!$user) {
+            return redirect()->back('')->with('errors','Not');
+        }
+        
 
         event(new Registered($user));
 

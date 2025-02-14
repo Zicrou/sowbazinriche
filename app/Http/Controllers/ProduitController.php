@@ -5,27 +5,25 @@ namespace App\Http\Controllers;
 use App\Models\Commande;
 use App\Models\Produit;
 use Illuminate\Http\Request;
+use App\Http\Requests\SearchProduitsRequest;
 
 class ProduitController extends Controller
 {
-    public function index()
+    public function index(SearchProduitsRequest $request)
     {
         $query = Produit::query()->orderBy('created_at', 'desc');
-		// if ($price = $request->validated('price')) {
-		// 	$query->where('price', '<=', $price);
-		// }
-		// if ($surface = $request->validated('surface')) {
-		// 	$query->where('surface', '>=', $surface);
-		// }
-		// if ($rooms = $request->validated('rooms')) {
-		// 	$query->where('rooms', '>=', $rooms);
-		// }
-		// if ($title = $request->validated('title')) {
-		// 	$query->where('title', 'like', "%{$title}%");
-		// }
+		
+        if ($price = $request->validated('price')) {
+            $query->where('prix', '<=', $price);
+            // dd($query->get());
+			
+		}if ($title = $request->validated('title')) {
+            $query->where('titre', 'like', "%{$title}%");
+		}
+       
         return view('produits.index',[
 			'produits' => $query->paginate(3),
-			// 'input'      => $request->validated(),
+			'input'      => $request->validated(),
 		]);
     }
 

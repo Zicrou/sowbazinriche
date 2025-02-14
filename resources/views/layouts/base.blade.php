@@ -27,23 +27,23 @@
                 <a href="{{ route("produit.index")}}" @class(["nav-link", "active" => str_contains($route, 'produit.')]) aria-current="page">Boutique</a>
               </li>
               <li class="nav-item">
-                <a href="" @class(["nav-link", "active" => str_contains($route, 'boutique.')]) aria-current="page">Panier</a>
+                <a href="{{ route("admin.commande.index")}}" @class(["nav-link", "active" => str_contains($route, 'commande.')]) aria-current="page">Panier</a>
               </li>
             </ul>
             <div class="ms-auto">
               @auth
               <ul class="navbar-nav">
                 <li class="nav-item ">
-                  {{-- <a href="{{ route('dashboard.index') }}" @class(["nav-link", "fw-bold"]) aria-current="page">Dashboard</a> --}}
+                  <a href="{{  route('dashboard') }}" @class(["nav-link", "fw-bold"]) aria-current="page">Dashboard</a>
                 </li>
               </ul> 
               @elseguest
               <ul class="navbar-nav">
                 <li class="nav-item ">
-                  {{-- <a href="{{ route('login') }}" @class(["nav-link", "fw-bold"]) aria-current="page">Se connecter</a> --}}
+                  <a href="{{ route('login') }}" @class(["nav-link", "fw-bold"]) aria-current="page">Se connecter</a>
                 </li>
                 <li class="nav-item ">
-                  {{-- <a href="{{ route('register') }}" @class(["nav-link", "fw-bold"]) aria-current="page">S'inscrire</a> --}}
+                  <a href="{{ route('register') }}" @class(["nav-link", "fw-bold"]) aria-current="page">S'inscrire</a>
                 </li>
               </ul> 
               @endauth

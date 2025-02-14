@@ -14,6 +14,6 @@
 
         </div>
         <p class="card-text"></p>
-        <a href="#" class="btn btn-primary">Commander</a>
+        <a href="#" class="btn btn-primary">Ajouter au Panier</a>
     </div>
 </div>

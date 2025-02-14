@@ -34,6 +34,14 @@
                     </x-slot>
 
                     <x-slot name="content">
+                        <x-dropdown-link :href="route('produit.index')">
+                            {{ __('Boutique') }}
+                        </x-dropdown-link>
+
+                        <x-dropdown-link :href="route('admin.commande.index')">
+                            {{ __('Commande') }}
+                        </x-dropdown-link>
+
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>

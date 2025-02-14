@@ -6,9 +6,14 @@
 
     <div class="row">
         <div class="d-flex justify-content-between align-items-center">
-            <h1>@yield('title')</h1>
+            <h1>@yield('title') @if (Auth::check())
+                @if (Auth::user()->role == "admin")
+                    Admin
+                @endif
+            @endif</h1>
             {{-- <a href="{{ route('admin.produit.create') }}" class="btn btn-primary">Ajouter un produit</a> --}}
         </div>
+        {{ $commandes->links() }}
     
         <table class="table table-striped">
             <thead>

@@ -21,38 +21,38 @@
             <div class="row">
                 <div class="col">
                    @if ($produit->count() !== 0)
-                   <div class="carousel slide" id="carouselDemo" data-bs-wrap="true" data-bs-ride="carousel">
-                        <div class="carousel-indicators">
-                            {{-- @foreach ($produit as $key => $image ) --}}
-                                    <button type="button" data-bs-target="#carouselDemo" data-bs-slide-to="{{$produit->id}}" class="{{ $produit->id == 0 ? 'active' : '' }}" aria-current="true" aria-label="Slide {{ $produit->id }}" >
-                                        <img src="{{ asset($produit->image) }}" alt=""/>
-                                    </button>
-                            {{-- @endforeach --}}
-                        </div>
-                        <div class="carousel-inner">
-                            {{-- @foreach ($produit as $key => $image ) --}}
-                                <div class="carousel-item {{ 'active'  }}">
-                                    <img class="d-block w-100" style="object-fit:cover;" src="{{ asset($produit->image) }}" alt="">
-                                    <div class="carousel-caption">
-                                        <h5>{{ $produit->titre }}</h5>
-                                    </div>
-                                </div>
-                            {{-- @endforeach --}}
-                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselDemo" data-bs-slide="prev">
-                                <span class="carousel-control-prev-icon text-black"></span>
-                            </button>
-                            <button class="carousel-control-next" type="button" data-bs-target="#carouselDemo"
-                                data-bs-slide="next">
-                                <span class="carousel-control-next-icon"></span>
-                            </button>
+                        <div class="carousel slide" id="carouselDemo" data-bs-wrap="true" data-bs-ride="carousel">
                             <div class="carousel-indicators">
-                                {{-- @for ($i = 0; $i >= $produit->count(); $i++) --}}
-                                    <button type="button" class="border"></button>
-                                {{-- @endfor --}}
+                                {{-- @foreach ($produit as $key => $image ) --}}
+                                        <button type="button" data-bs-target="#carouselDemo" data-bs-slide-to="{{$produit->id}}" class="{{ $produit->id == 0 ? 'active' : '' }}" aria-current="true" aria-label="Slide {{ $produit->id }}" >
+                                            <img src="{{ asset($produit->image) }}" alt=""/>
+                                        </button>
+                                {{-- @endforeach --}}
+                            </div>
+                            <div class="carousel-inner">
+                                {{-- @foreach ($produit as $key => $image ) --}}
+                                    <div class="carousel-item {{ 'active'  }}">
+                                        <img class="d-block w-100" style="object-fit:cover;" src="{{ asset($produit->image) }}" alt="">
+                                        <div class="carousel-caption">
+                                            <h5>{{ $produit->titre }}</h5>
+                                        </div>
+                                    </div>
+                                {{-- @endforeach --}}
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carouselDemo" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon text-black"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carouselDemo"
+                                    data-bs-slide="next">
+                                    <span class="carousel-control-next-icon"></span>
+                                </button>
+                                <div class="carousel-indicators">
+                                    {{-- @for ($i = 0; $i >= $produit->count(); $i++) --}}
+                                        <button type="button" class="border"></button>
+                                    {{-- @endfor --}}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                   @endif
+                    @endif
                     
                 </div>
                 <div class="col">
@@ -82,7 +82,7 @@
                                 'name' => 'user_id',
                                 'label' => 'Quantité par métre:',
                                 'type' => 'number',
-                                'value' => Auth::user()->id,
+                                'value' => Auth::check() ? Auth::user()->id : '' ,
 
                             ])
                             </div>
@@ -97,7 +97,7 @@
                             </div>
                             <div class="col-12 d-flex justify-content-center mt-4">
                                 <button class="col-3 btn btn-primary d-flex justify-content-center">
-                                    Nous contacter
+                                    Ajouter au Panier
                                 </button>
                             </div>
                         <div>
