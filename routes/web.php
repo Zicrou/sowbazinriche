@@ -24,6 +24,9 @@ Route::get('/', function () {
 Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
     Route::resource('produit', ProduitController::class);
     Route::resource('commande', CommandeController::class);
+    Route::patch('commande/{commande}/validate', [CommandeController::class, 'validateCommande'])->name('commande.validate');
+    //Route::patch('/admin/commandes/{id}/validate', [CommandeController::class, 'validateCommande'])->name('admin.commande.validate');
+
 });
 
 // Route::resource('picture', PictureController::class);

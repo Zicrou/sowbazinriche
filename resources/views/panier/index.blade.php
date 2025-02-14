@@ -28,9 +28,7 @@
                                 <p>Prix: {{ number_format($commande->produit->prix, thousands_separator: ' ') }}</p>
                                 <p>Quantité: {{ $commande->quantite }}</p>
                                 <p>Total: {{ $commande->quantite  * $commande->produit->prix }} FCFA</p>
-                                @php
-                                 $commande->id = 52;
-                                @endphp
+
                                 @if ($commande->validated == 1)
                                 <p>Total: {{ $commande->statut }} </p>
                                 <p>Utilisateur: {{ $commande->user->name }} - {{ $commande->user->phone }}</p>
@@ -45,7 +43,19 @@
                         </div>
                     </div>
                     <div class="card-footer d-flex gap-2 justify-content-evenly">
-                        <a href="{{ route('admin.commande.update', $commande) }}" class="btn btn-outline-primary">Valider</a>
+                        @if (Auth::check())
+                            @if (Auth::user()->role == "user")
+                                @if ($commande->validated == 0)
+                                <form action="{{ route('admin.commande.validate', $commande) }}" method="post">
+                                    @csrf
+                                    @method('patch')
+                                    <button class="btn btn-outline-primary">Valider</button>
+                                </form>
+                                @endif
+                            @endif
+                        
+                        @endif
+                        {{-- <a href="{{ route('admin.commande.validate', $commande) }}" class="btn btn-outline-primary">Valider</a> --}}
                         <a href="{{ route('admin.commande.edit', $commande) }}" class="btn btn-outline-warning">Editer</a>
                         <form action="{{ route('admin.commande.destroy', $commande) }}" method="post">
                             @csrf

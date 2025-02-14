@@ -19,7 +19,7 @@ class CommandeController extends Controller
         if (Auth::check()) {
             if (Auth::user()->role == "user") {
                 $commandes = Commande::where('user_id', Auth::user()->id)->where('validated', false)->orderBy("created_at","desc");
-                return view("panier.index", ['commandes' => $commandes->paginate(3)]);
+                return view("panier.index", ['commandes' => $commandes->paginate(1)]);
             }elseif (Auth::user()->role == "admin") {
                 $commandes = Commande::where('validated', '=',1)->where('statut', '!=', 'livré' )->orderBy("created_at","desc")->paginate(1);
                 //dd($commandes[0]);
@@ -90,7 +90,6 @@ class CommandeController extends Controller
                 ]);
                 $commande = Commande::findOrFail($id);
                 $commande->update($data);
-                return redirect()->route('panier.index')->with('success', 'Commande mise à jour avec succès');
             }elseif (Auth::user()->role == 'user') {
                 $data = $request->validate([
                     'validated' => 'boolean',
@@ -98,8 +97,8 @@ class CommandeController extends Controller
                 ]);
                 $commande = Commande::findOrFail($id);
                 $commande->update($data);
-                return redirect()->route('admin.commande.index')->with('success', 'Commande mise à jour avec succès');
             }
+            return redirect()->route('admin.commande.index')->with('success', 'Commande modifiée avec succès');
         }
         return redirect()->route('login')->with('error', 'Vous devez vous connecter d\'abord');
     }
@@ -114,50 +113,33 @@ class CommandeController extends Controller
                 $commande = Commande::where('id', $id)->where('validated', 0)->first();
                 if ($commande) {
                     $commande->forceDelete();
-                    $commandes = Commande::where('user_id', Auth::user()->id)->where('validated', false)->orderBy("created_at","desc");
-                    return view('panier.index', ['commandes' => $commandes->paginate(3)]); //->with('error', 'Vous ne pouvez pas supprimer une commande validée');
                 }
             }
             if (Auth::user()->role == "admin") {
                 $commande = Commande::where('id', $id)->where('validated', 1)->first();
                 if ($commande) {
                     $commande->delete();
-                    $commandes = Commande::where('user_id', Auth::user()->id)->where('validated', true)->orderBy("created_at","desc");
-                    return view("admin.commandes.index", ['commandes' => $commandes->paginate(3)])->with('success', 'Commande supprimée avec succès');
                 }
             }
+            return redirect()->route('admin.commande.index')->with('success', 'Commande supprimée avec succès');
+
         }
         return redirect()->route('/login')->with('success', 'Vous devez vous connecté d\'abord');
-        
-        // if (!Auth::check()) {
-        // }
-        // if (Auth::user()->role == "user") {
-        //     $commande = Commande::where('id', $id)->where('validated', 0)->exists();
-        //     if ($commande) {
-        //         return redirect()->route('panier.index')->with('success', 'Commande supprimée avec succès'); //->with('error', 'Vous ne pouvez pas supprimer une commande validée');
-        //         $commande->delete();
-        //     }
-        // }
+    }
 
-        // elseif (Auth::user()->role == "user") {
-        //     return redirect()->route('panier.index')->with('error', 'Le type est utilisé dans une vente');
-        // }
-
-        // if (Auth::user()->role == "admin") {
-        //     $commande = Commande::where('id', $id)->where('validated', false)->exists();
-        //     if ($commande) {
-        //         return redirect()->route('admin.commande.index')->with('error', 'Vous ne pouvez pas supprimer une commande validée');
-        //     }
-        //     return redirect()->route('admin.commande.index')->with('error', 'Le type est utilisé dans une vente');
-        // }
-
-       
-        // elseif (Auth::user()->role == "admin") {
-        //     $commande = Commande::where('id', $id)->where('validated', false)->exists();
-        //     $commande;
-        // }
-        
-        //$commande->delete();
-        return redirect()->route('admin.commande.index')->with('success', 'Commande supprimée avec succès');
+    public function validateCommande(string $id)
+    {
+        if (Auth::check()) {
+            if (Auth::user()->role == "user") {
+                $commande = Commande::where('id', $id)->first();
+                //dd($commande->exists());
+                if ($commande) {
+                    $commande->validated = 1;//['validated' => 1]);
+                    $commande->save();
+                }
+                return redirect()->route('admin.commande.index')->with('success', 'Commande validée avec succès');
+            }
+        }
+        return redirect()->route('login')->with('error', 'Vous devez vous connecter d\'abord');
     }
 }
