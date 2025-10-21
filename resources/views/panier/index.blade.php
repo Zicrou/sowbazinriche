@@ -24,7 +24,7 @@
                     <p>Pas de produit dans le panier</p>
                 @else 
                 @foreach ($panier->lineItems as $item)
-                @if ($item->commande_id == null)
+                @unless ($item->commande_id != null)
                     
                 <div class="card col-10 mx-auto mb-3"  style="background-color: white;">
                     <div class="card-header bg-white">
@@ -65,7 +65,7 @@
                         
                     </div>
                 </div>
-                @endif
+                @endunless
             @endforeach
                 @endif
                 
