@@ -29,7 +29,9 @@
             'type' => 'number',
             'value' => Auth::check() ? Auth::user()->id : '' ,
         ])
-        <button class="btn btn-primary">Ajouter au Panier</button>
+        @if (Auth::check() and Auth::user()->role == "user")
+            <button class="btn btn-primary">Ajouter au Panier</button>
+        @endif
     </form>
     </div>
 </div>

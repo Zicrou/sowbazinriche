@@ -22,8 +22,8 @@ class CommandeFormRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'quantite' => ['required', 'integer'], 
-            'produit_id'  => ['exists:produits,id', 'required'],
+            'total' => ['required', 'integer'], 
+            'status'  => ['string', 'required'],
             'user_id' => ['exists:users,id', 'required'],
         ];
     }

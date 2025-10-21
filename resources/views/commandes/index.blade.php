@@ -4,6 +4,11 @@
 
 @section('content')
 <style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+    /* .card p {
+        font-family: 'Open Sans';
+        color: #333;
+    } */
     body{
         background-color: #F2F2F2;
     }
@@ -16,63 +21,47 @@
         </div>
     
     </div>
-    {{-- {{ $paniers->links() }} --}}
+    {{ $commandes->links() }}
     <section>
         <div class="container">
-            @foreach ($paniers as $panier)
-                @if ($panier->lineItems->isEmpty())
+            @foreach ($commandes as $commande)
+                @if ($commande->lineItems->isEmpty())
                     <p>Pas de produit dans le panier</p>
                 @else 
-                @foreach ($panier->lineItems as $item)
-                @unless ($item->commande_id != null)
+                    @foreach ($commande->lineItems as $item)
+                        <div class="card col-10 mx-auto mb-3"  style="background-color: white;">
+                            <div class="card-header bg-white">
+                                <h2 class="mx-2 text-start">{{ $item->produit->titre}}</h2>
+                                <div class="row d-flex line-item justify-content-start">
+                                    <div class="col-6 col-lg-6 mx-2 ">
+                                        <p>
+                                            <img class="d-block w-50" style="height:auto; object-fit:cover;" src="{{ asset($item->produit->image) }}" alt="">
+                                        </p>
                     
-                <div class="card col-10 mx-auto mb-3"  style="background-color: white;">
-                    <div class="card-header bg-white">
-                        <h2 class="text-start mx-2">{{ $item->produit->titre}}</h2>
-                        <div class="row d-flex line-item">
-                            <div class="col-12 col-lg-6 mx-2 d-flex justify-content-center">
-                                <p>
-                                    <img class="d-block w-50" style="height:auto; object-fit:cover;" src="{{ asset($item->produit->image) }}" alt="">
-                                </p>
-            
-                            </div>
-                            <div class="col-12 col-lg-3 gap-3 mx-3">
-                                <p>Prix: {{ number_format($item->produit->prix, thousands_separator: ' ') }}</p>
-                                <label for="">Quantite</label>
-                                <input type="number"
-                                    class="quantite form-control"
-                                    value="{{ $item->quantite }}"
-                                    min="1"
-                                    data-prix="{{ $item->prix_unitaire }}">
+                                    </div>
+                                    <div class="col-6 col-lg-3 gap-3 mt-4">
+                                        <p>Prix: {{ number_format($item->produit->prix, thousands_separator: ' ') }}</p>
+                                        <p>Quantite: {{ $item->quantite }} </p>
+                                        {{-- <label for="">Quantite</label>
+                                        <input type="number"
+                                            class="quantite form-control"
+                                            value="{{ $item->quantite }}"
+                                            min="1"
+                                            data-prix="{{ $item->prix_unitaire }}" disabled readonly> --}}
+                                            <p class="mt-3">Statut:  @if($commande->status == 'en_attente') En Attente @elseif ($commande->status == 'en_cours') En cours @endif </p>
+                                        <p class="total">Total: {{ number_format($item->quantite  * $item->produit->prix, 0, ',', ' ') . " FCFA" }}</p>
+                                    </div>
                                     
-                                <p class="total">Total: {{ number_format($item->quantite  * $item->produit->prix, 0, ',', ' ') . " FCFA" }}</p>
+                                </div>
                             </div>
-                            
+                            <div class="card-footer d-flex gap-2 justify-content-evenly">
+                                <span>Text</span>                                
+                            </div>
                         </div>
-                    </div>
-                    <div class="card-footer d-flex gap-2 justify-content-evenly">
-                        <form action="{{ route('admin.commande.store', $item) }}" method="post">
-                            @csrf
-                            
-                            <button class="btn btn-outline-primary">Valider</button>
-                        </form>
-                        {{-- <a href="{{ route('admin.commande.store', $item) }}" class="btn btn-outline-primary">Valider</a>  --}}
-                        {{-- <a href="{{ route('admin.commande.edit', $item) }}" class="btn btn-outline-warning">Editer</a> --}}
-                        <form action="{{ route('lineItems.destroy', $item) }}" method="post"> 
-                            @csrf
-                            @method('delete')
-                            <button class="btn btn-outline-danger delete-line-item" data-id="{{ $item->id }}"" id="delete">Supprimer</button>
-                        </form>
-                        
-                    </div>
-                </div>
-                @endunless
-            @endforeach
+                    @endforeach
                 @endif
-                
             @endforeach
-            {{ $paniers->links() }}
-        
+            {{ $commandes->links() }}
         </div>
     </section>
 @endsection

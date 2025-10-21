@@ -26,4 +26,9 @@ class Commande extends Model
                     ->withPivot('quantite', 'prix_unitaire')
                     ->withTimestamps();
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

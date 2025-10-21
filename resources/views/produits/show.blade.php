@@ -102,9 +102,11 @@
                             ])
                             </div> --}}
                             <div class="col-12 m-5">
-                                <button class="col-4 btn btn-primary mx-5">
-                                    Ajouter au Panier
-                                </button>
+                                @if (Auth::check() and Auth::user()->role == "user")
+                                    <button class="col-4 btn btn-primary mx-5">
+                                        Ajouter au Panier
+                                    </button>
+                                @endif
                             </div>
                         <div>
                         </div>

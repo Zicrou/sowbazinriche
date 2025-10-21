@@ -17,17 +17,22 @@ class CommandeController extends Controller
      */
     public function index()
     {
-        if (Auth::check()) {
-            if (Auth::user()->role == "user") {
-                $commandes = Commande::where('user_id', Auth::user()->id)->where('validated', false)->orderBy("created_at","desc");
-                return view("panier.index", ['commandes' => $commandes->paginate(1)]);
-            }elseif (Auth::user()->role == "admin") {
-                $commandes = Commande::where('validated', '=',1)->where('statut', '!=', 'livré' )->orderBy("created_at","desc")->paginate(1);
-                //dd($commandes[0]);
-                return view("panier.index", ['commandes' => $commandes]);
-                // return redirect()->route('admin.commande.index', ['commandes' => $commandes->paginate(3)]);
-            }
+        // if (Auth::check()) {
+        //     // dd($paniers->first()->lineItems->first()->produit->titre);
+        // }
+        // return redirect()->route('login')->with('error', 'Vous devez vous connecter d\'abord');
+        
+        if (Auth::user()->role == "user") {
+            $commandes = Commande::where('user_id', Auth::user()->id)->with('lineItems.produit')->orderBy("created_at","desc")->paginate(25);
+            // $commandes = Commande::where('user_id', Auth::user()->id)->where('validated', false)->orderBy("created_at","desc");
+            return view("commandes.index", ['commandes' => $commandes]);
+                // return view("panier.index", ['commandes' => $commandes->paginate(1)]);
+        }elseif (Auth::user()->role == "admin") {
+            $commandes = Commande::where('status',  '!=', "terminé")->with(['lineItems.produit', 'user'])->orderBy("created_at","desc")->paginate(25);
+            return view("admin.commandes.index", ['commandes' => $commandes]);
+            // return redirect()->route('admin.commande.index', ['commandes' => $commandes]);
         }
+        
         return redirect()->route('login')->with('error', 'Vous devez vous connecter d\'abord');
     }
 
@@ -45,33 +50,41 @@ class CommandeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CommandeFormRequest $request)
+    public function store(Request $request)
     {
         if (!Auth::check()) {
             return redirect()->route('/login')->with('success', 'Vous devez vous connecté d\'abord');
         }
         $data = $request->all();
-        $produit = Produit::find($data["produit_id"]);
         $panier = Panier::where('user_id', Auth::user()->id)->first();
-        // Créer une commande depuis le panier
-        $commande = Commande::create([
-            'user_id' => $panier->user_id,
-            'total' => $panier->lineItems->sum(fn($item) => $item->prix_unitaire * $item->quantite),
-            'status' => 'en_attente',
-        ]);
-
-        foreach ($panier->lineItems as $item) {
-            $commande->lineItems()->create([
-                'produit_id' => $item->produit_id,
-                'quantite' => $item->quantite,
-                'prix_unitaire' => $item->prix_unitaire,
-            ]);
+        if(Auth::user()->role == 'user'){
+            $commande = Commande::where('user_id', Auth::user()->id)->first();
+            // dd($commande);
+            if($commande == null){
+                $commande = Commande::create([
+                    'user_id' => $panier->user_id,
+                    'total' => $panier->lineItems->sum(fn($item) => $item->prix_unitaire * $item->quantite),
+                    'status' => 'en_attente',
+                ]);
+            }
+            // Créer une commande depuis le panier
+             $produitId = 0;
+             foreach ($panier->lineItems as $item) {
+                 $produitId = $item->produit_id;
+                 $commande->lineItems()->create([
+                     'produit_id' => $item->produit_id,
+                     'quantite' => $item->quantite,
+                     'prix_unitaire' => $item->prix_unitaire,
+                 ]);
+     
+             }
+             $produit = Produit::find($produitId);
+             $expectedSlug = $produit->getSlug();
         }
-
         //$panier->delete(); // vider le panier après commande
         
-        $expectedSlug = $produit->getSlug();
-        return to_route('commande.index', ['slug' => $expectedSlug])->with('success', 'La commande a été créé avec succés');
+        // return to_route('panier.index')->with('success', 'Produit ajouté au panier avec succés');
+        return to_route('admin.commande.index')->with('success', 'La commande a été créé avec succés');
     }
 
     /**
@@ -98,25 +111,27 @@ class CommandeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        if (Auth::check()) {
-            if (Auth::user()->role == 'admin') {
+        // if (Auth::check()) {
+            //     if (Auth::user()->role == 'admin') {
                 $data = $request->validate([
-                    'statut' => 'required|string|max:255',
-                    'quantite' => ['integer'], 
+                    'status' => 'required|string|max:255',
+                    // 'quantite' => ['integer'], 
                 ]);
-                $commande = Commande::findOrFail($id);
+                $commande = Commande::find($id);
+                // dd($commande->update($data));
                 $commande->update($data);
-            }elseif (Auth::user()->role == 'user') {
-                $data = $request->validate([
-                    'validated' => 'boolean',
-                    'quantite' => ['required', 'integer'], 
-                ]);
-                $commande = Commande::findOrFail($id);
-                $commande->update($data);
-            }
-            return redirect()->route('admin.commande.index')->with('success', 'Commande modifiée avec succès');
-        }
-        return redirect()->route('login')->with('error', 'Vous devez vous connecter d\'abord');
+            // }
+            // elseif (Auth::user()->role == 'user') {
+            //     $data = $request->validate([
+            //         'validated' => 'boolean',
+            //         'quantite' => ['required', 'integer'], 
+            //     ]);
+            //     $commande = Commande::findOrFail($id);
+            //     $commande->update($data);
+            // }
+            return redirect()->route('admin.commande.index')->with('success', 'Statut de la commande modifiée avec succès');
+        // }
+        // return redirect()->route('login')->with('error', 'Vous devez vous connecter d\'abord');
     }
 
     /**
