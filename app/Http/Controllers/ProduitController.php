@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Commande;
 use App\Models\Produit;
+use App\Models\Picture;
 use Illuminate\Http\Request;
 use App\Http\Requests\SearchProduitsRequest;
 
@@ -34,10 +35,10 @@ class ProduitController extends Controller
         if($slug !== $expectedSlug){
             return to_route('produit.show', ['slug' => $expectedSlug, 'produit' => $produit]);
         }
-        // $images = Picture::where('produit_id', $produit->id)->get();
+        $images = Picture::where('produit_id', $produit->id)->get();
         return view('produits.show', [
             'produit' => $produit,
-            // 'images' => $images
+            'images' => $images
         ]);
     }
 }

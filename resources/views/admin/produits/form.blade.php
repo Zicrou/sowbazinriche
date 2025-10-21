@@ -19,7 +19,7 @@
                 @include('shared.input', ['class' => 'col', 'name' => 'image', 'label' => 'Image Cover', 'type' => 'file', 'value' => $produit->image])
                 @if ($produit->image)
                     <div class="d-flex col-md-3 mt-1">
-                        <img class="" src="{{ asset($produit->image) }}" alt="image" style="width:200px;height:275px">
+                        <img class="" src="{{ asset($produit->image) }}" alt="image" style="width:200px;height:200px">
                     </div>
                 @endif
                 {{-- @include('shared.input', ['class' => 'col', 'name' => 'images[]', 'multiple', 'label' => 'Ajouter des photos', 'type' => 'file', 'value' => $produit->images]) --}}
@@ -60,7 +60,7 @@
             @if ($pictures->count() !==0 )
                 @foreach ( $pictures as $picture )
                     <div class="d-flex col-sm-3 mt-4">
-                        <img class="" src="{{ asset($picture->images) }}" alt="image" style="width:200px;height:275px">
+                        <img class="" src="{{ asset($picture->images) }}" alt="image" style="width:200px;height:200px">
                         <a class="px-2" href="{{ route('picture.delete', $picture->id) }}">Effacer</a>
 
                     </div>

@@ -38,6 +38,12 @@
                             {{ __('Boutique') }}
                         </x-dropdown-link>
 
+                       @if (Auth::user()->role === 'admin')
+                            <x-dropdown-link :href="route('admin.produit.index')">
+                            {{ __('Produits') }}
+                            </x-dropdown-link>
+                       @endif
+
                         <x-dropdown-link :href="route('admin.commande.index')">
                             {{ __('Commande') }}
                         </x-dropdown-link>

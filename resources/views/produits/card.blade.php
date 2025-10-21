@@ -11,9 +11,25 @@
                 <span class="justify-content-start">{!! $produit->getFormatedPrice() !!} /</span>
                 <span class="text-end">{{ $produit->taille }}métres</span>
             </p>
-
         </div>
         <p class="card-text"></p>
-        <a href="#" class="btn btn-primary">Ajouter au Panier</a>
+        <form action="{{route('panier.store')}}" method="post" enctype="multipart/form-data">
+        @csrf
+        @include('shared.input', [
+            'class' => 'col-5 visually-hidden',
+            'name' => 'produit_id',
+            'label' => 'Produit:',
+            'type' => 'number',
+            'value' => $produit->id,
+        ])
+        @include('shared.input', [
+            'class' => 'col-5 visually-hidden',
+            'name' => 'user_id',
+            'label' => 'User:',
+            'type' => 'number',
+            'value' => Auth::check() ? Auth::user()->id : '' ,
+        ])
+        <button class="btn btn-primary">Ajouter au Panier</button>
+    </form>
     </div>
 </div>

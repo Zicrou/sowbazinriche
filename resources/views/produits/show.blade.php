@@ -13,11 +13,11 @@
             width: max-content !important;
         }
     </style>
-    <div class="container mt-4">
+    <div class="container mt-1">
 
         <hr>
 
-        <div class="mt-4">
+        <div class="mt-3">
             <div class="row">
                 <div class="col">
                    @if ($produit->count() !== 0)
@@ -26,6 +26,11 @@
                                 {{-- @foreach ($produit as $key => $image ) --}}
                                         <button type="button" data-bs-target="#carouselDemo" data-bs-slide-to="{{$produit->id}}" class="{{ $produit->id == 0 ? 'active' : '' }}" aria-current="true" aria-label="Slide {{ $produit->id }}" >
                                             <img src="{{ asset($produit->image) }}" alt=""/>
+                                            {{-- @foreach ($images as $imge)
+                                                <div class="d-flex">
+                                                    <img src="{{ asset($imge->images) }}" alt=""/>
+                                                </div>
+                                            @endforeach --}}
                                         </button>
                                 {{-- @endforeach --}}
                             </div>
@@ -61,10 +66,11 @@
                         {{ number_format($produit->prix, thousands_separator: ' ') }} FCFA   
                     </div>
 
-                    <h4>{{ __('Interested in this property :title ?', ['title' => $produit->titre]) }}</h4>
+                    {{-- <h4>{{ __('Interested in this property :title ?', ['title' => $produit->titre]) }}</h4> --}}
+                    
                     @include('shared.flash')
 
-                    <form action="{{ route('admin.commande.store') }}" method="post" class="vstack gap-3">
+                    <form action="{{ route('panier.store') }}" method="post" class="vstack gap-3">
                         @csrf
                         <div class="row">
                             <div class="col-12 d-flex justify-content-center">
@@ -80,23 +86,23 @@
                                 @include('shared.input', [
                                 'class' => 'col-5 visually-hidden',
                                 'name' => 'user_id',
-                                'label' => 'Quantité par métre:',
+                                'label' => 'User:',
                                 'type' => 'number',
                                 'value' => Auth::check() ? Auth::user()->id : '' ,
 
                             ])
                             </div>
-                            <div class="col-12 d-flex justify-content-center">
+                            {{-- <div class="col-12 d-flex justify-content-center">
                                 @include('shared.input', [
-                                'class' => 'col-5',
+                                'class' => 'col-5 visually-hidden',
                                 'name' => 'quantite',
-                                'label' => 'Quantité par métre:',
+                                'label' => 'Quantité:',
                                 'type' => 'number',
                                 'value' => $input['quantite'] ?? '',
                             ])
-                            </div>
-                            <div class="col-12 d-flex justify-content-center mt-4">
-                                <button class="col-3 btn btn-primary d-flex justify-content-center">
+                            </div> --}}
+                            <div class="col-12 m-5">
+                                <button class="col-4 btn btn-primary mx-5">
                                     Ajouter au Panier
                                 </button>
                             </div>
@@ -115,28 +121,14 @@
                 <h2>Caractéristique</h2>
                 <table class="table table-striped">
                     <tr>
-                        <td>titre</td>
-                        <td>{{ $produit->titre }}m²</td>
+                        <td>Couleur</td>
+                        <td>Bleu, Vert, Rouge</td>
                     </tr>
                     <tr>
-                        <td>Piéces</td>
-                        <td>{{ $produit->titre }}</td>
+                        <td>Temps de livraison</td>
+                        <td>15jours</td>
                     </tr>
-                    <tr>
-                        <td>Chambres</td>
-                        <td>{{ $produit->titre }}</td>
-                    </tr>
-                    <tr>
-                        <td>Etage</td>
-                        <td>{{ $produit->titre ?: 'Rez de chaussé' }}</td>
-                    </tr>
-                    <tr>
-                        <td>Localisation</td>
-                        <td>
-                            {{ $produit->prix }}<br />
-                            {{ $produit->prix }} {{ $produit->prix }}
-                        </td>
-                    </tr>
+                    
                 </table>
             </div>
             <div class="col-4">

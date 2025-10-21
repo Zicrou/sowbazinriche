@@ -3,6 +3,8 @@
 @section('title', 'Tous les produits')
 
 @section('content')
+{{-- <h1><a href="{{ route('admin.produit.form') }}" class="btn btn-primary">Ajouter</a></h1> --}}
+            <a href="{{ route('admin.produit.create') }}" class="btn btn-primary">Ajouter un produit</a>
 
     <div class="row">
         <div class="d-flex justify-content-between align-items-center">
@@ -16,7 +18,6 @@
                     <th>Titre</th>
                     <th>Quantité</th>
                     <th>Montant</th>
-                    <th>Prix</th>
                     <th>Image</th>
                     <th class="text-end">Actions</th>
                 </tr>

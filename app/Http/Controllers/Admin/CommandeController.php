@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\CommandeFormRequest;
 use App\Models\Commande;
+use App\Models\Panier;
 use App\Models\Produit;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -51,11 +52,26 @@ class CommandeController extends Controller
         }
         $data = $request->all();
         $produit = Produit::find($data["produit_id"]);
+        $panier = Panier::where('user_id', Auth::user()->id)->first();
+        // Créer une commande depuis le panier
+        $commande = Commande::create([
+            'user_id' => $panier->user_id,
+            'total' => $panier->lineItems->sum(fn($item) => $item->prix_unitaire * $item->quantite),
+            'status' => 'en_attente',
+        ]);
 
-        $command = Commande::create($data);
-        // dd($command);
+        foreach ($panier->lineItems as $item) {
+            $commande->lineItems()->create([
+                'produit_id' => $item->produit_id,
+                'quantite' => $item->quantite,
+                'prix_unitaire' => $item->prix_unitaire,
+            ]);
+        }
+
+        //$panier->delete(); // vider le panier après commande
+        
         $expectedSlug = $produit->getSlug();
-        return to_route('produit.show', ['slug' => $expectedSlug, 'produit' => $produit, 'commande' => $command->quantite])->with('success', 'La commande a été créé avec succés');
+        return to_route('commande.index', ['slug' => $expectedSlug])->with('success', 'La commande a été créé avec succés');
     }
 
     /**

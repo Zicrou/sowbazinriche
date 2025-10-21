@@ -1,11 +1,10 @@
 <?php
 
-use App\Models\Produit;
-use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use App\Models\Produit;
+use App\Models\User;
 return new class extends Migration
 {
     /**
@@ -13,11 +12,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('commandes', function (Blueprint $table) {
+        Schema::create('paniers', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constraint()->cascadeOnDelete();
-            $table->decimal('total', 10, 2)->default(0);
-            $table->string('status')->default('en_attente'); // en_attente, payée, livrée...
             $table->timestamps();
         });
     }
@@ -27,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('commandes');
+        Schema::dropIfExists('paniers');
     }
 };

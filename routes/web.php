@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\Admin\ProduitController;
 use App\Http\Controllers\Admin\CommandeController;
+use App\Http\Controllers\PanierController;
 use App\Http\Controllers\PictureController;
 use App\Http\Controllers\ProfileController;
+use App\Models\LineItems;
 use Illuminate\Support\Facades\Route;
 
 $idRegex   = '[0-9]+';
@@ -16,6 +18,8 @@ $slugRegex = '[0-9a-z\-]+';
         'produit' => $idRegex,
         'slug'     => $slugRegex,
     ]);
+    Route::resource('panier', PanierController::class)->except(['show']);
+    Route::resource('lineItems', LineItems::class)->except(['show']);
     // });
 Route::get('/', function () {
     return view('welcome');
@@ -24,8 +28,8 @@ Route::get('/', function () {
 Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
     Route::resource('produit', ProduitController::class);
     Route::resource('commande', CommandeController::class);
-    Route::patch('commande/{commande}/validate', [CommandeController::class, 'validateCommande'])->name('commande.validate');
-    //Route::patch('/admin/commandes/{id}/validate', [CommandeController::class, 'validateCommande'])->name('admin.commande.validate');
+    // Route::patch('commande/{commande}/validate', [CommandeController::class, 'validateCommande'])->name('commande.validate');
+    Route::patch('/admin/commandes/{id}/validate', [CommandeController::class, 'validateCommande'])->name('admin.commande.validate');
 
 });
 
